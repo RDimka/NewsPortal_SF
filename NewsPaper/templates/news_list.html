@@ -1,5 +1,8 @@
 {% extends 'flatpages/default.html' %}
- 
+
+{% load custom_filters %}
+{% load custom_tags %}
+
 {% block title %}
 All news
 {% endblock title %}
@@ -7,6 +10,7 @@ All news
 <!-- В контенте на странице мы выводим все товары -->
 {% block content %}
    <h1>Все новости ({{ news_list | length }})</h1>
+    <h3>{% current_time '%d %b %Y' %}</h3>
    <!-- Выводим новости, только если они есть с помощью тега if -->
    {% if news_list %}
        <table>

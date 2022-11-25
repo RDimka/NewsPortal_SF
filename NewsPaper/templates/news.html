@@ -1,6 +1,9 @@
 <!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
 {% extends 'flatpages/default.html' %}
 
+{% load custom_filters %}
+{% load custom_tags %}
+
 <!-- Название у нас будет Post -->
 {% block title %}
 News
@@ -8,5 +11,7 @@ News
 
 <!-- В контенте на странице мы выводим саму статью, идентификатор которой был передан в url -->
 {% block content %}
-<h1>{{ news }}</h1>
+<h1>{{ news.title }}</h1>
+<h5 align="right">{% current_time '%d %b %Y' %}</h5>
+<div align="justify">{{ news.text }}</div>
 {% endblock content %}
