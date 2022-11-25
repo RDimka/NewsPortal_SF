@@ -11,7 +11,8 @@ News
 
 <!-- В контенте на странице мы выводим саму статью, идентификатор которой был передан в url -->
 {% block content %}
-<h1>{{ news.title }}</h1>
+
+<h1>{{ news.title|censor }}</h1>
 <h5 align="right">{% current_time '%d %b %Y' %}</h5>
-<div align="justify">{{ news.text }}</div>
+<div align="justify">{{ news.text|censor }}</div>
 {% endblock content %}
