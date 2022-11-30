@@ -23,6 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('pages/', include('django.contrib.flatpages.urls')),
     # Делаем так, чтобы все адреса из нашего приложения (news_app/urls.py)
-   # подключались к главному приложению с префиксом posts/.
-   path('news/', include('news_app.urls')),
-]
+    # подключались к главному приложению с префиксом posts/.
+    path('news/', include('news_app.urls')),
+    ]
