@@ -89,6 +89,13 @@ class PostCreate(CreateView):
     # и новый шаблон, в котором используется форма.
     template_name = 'news_edit.html'
 
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        path = self.request.META['PATH_INFO']
+        post.text = path
+        if path == '/newspaper/article/create/':  #если статья - ставим False. По умолчанию - новость - True
+            post.is_news = False
+        return super().form_valid(form)
 class PostUpdate(UpdateView):
     form_class = PostForm
     model = Post
