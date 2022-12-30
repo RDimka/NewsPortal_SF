@@ -14,13 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
-from django.contrib import admin
 from django.urls import path, include
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('protect.urls')),
+    path('sign/', include('sign.urls')),
     path('pages/', include('django.contrib.flatpages.urls')),
     # Делаем так, чтобы все адреса из нашего приложения (news_app/urls.py)
     # подключались к главному приложению с префиксом posts/.
