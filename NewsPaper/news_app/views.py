@@ -9,6 +9,8 @@ from .models import Post
 from .forms import PostForm
 from .filters import PostFilter
 
+from django.contrib.auth.mixins import PermissionRequiredMixin
+
 class PostList(ListView):
     # Указываем модель, объекты которой мы будем выводить
     model = Post
@@ -81,7 +83,10 @@ class PostSearchList(ListView):
         return context
 
 # Добавляем новое представление для редактирования постов.
-class PostCreate(CreateView):
+class PostCreate(PermissionRequiredMixin, CreateView):
+
+    permission_required = ('news_app.add_post',)
+
     # Указываем нашу разработанную форму
     form_class = PostForm
     # модель постов
@@ -96,7 +101,10 @@ class PostCreate(CreateView):
         if path == '/newspaper/article/create/':  #если статья - ставим False. По умолчанию - новость - True
             post.is_news = False
         return super().form_valid(form)
-class PostUpdate(UpdateView):
+class PostUpdate(PermissionRequiredMixin, UpdateView):
+
+    permission_required = ('news_app.change_post',)
+
     form_class = PostForm
     model = Post
     template_name = 'news_edit.html'
