@@ -1,5 +1,10 @@
 from django.shortcuts import render
 
+from django.core.mail import EmailMultiAlternatives
+from django.db.models.signals import m2m_changed
+from django.dispatch import receiver
+from django.template.loader import render_to_string
+
 # Импортируем класс, который говорит нам о том,
 # что в этом представлении мы будем выводить список объектов из БД
 from django.urls import reverse_lazy
@@ -7,13 +12,17 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.shortcuts import get_object_or_404
 
-from .models import Post
+from .models import Post, PostCategory
 from .models import Category
 from .forms import PostForm
 from .filters import PostFilter
 
+
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
+
+
+
 
 class PostList(ListView):
     # Указываем модель, объекты которой мы будем выводить
@@ -152,3 +161,29 @@ def subscribe(request, pk):
 
     message = "Вы подписались на рссылку новостей категории "
     return render(request, 'subscribe.html', {'category': category, 'message': message})
+
+
+# # def send_email_notif(preview, pk, title, subscribers_email):
+# #     html_mail = render_to_string('post_add_email.html', {'text': preview, 'ahref': f'http://127.0.0.1:8000/newspaper/{pk}',})
+# #
+# #     message = EmailMultiAlternatives(subject=title, body='', from_email='rdimir@yandex.ru', to=subscribers_email )
+# #
+# #     message.attach_alternative(html_mail, 'text\html')
+# #     message.send()
+#
+#
+# @receiver(m2m_changed, sender=PostCategory)
+# def new_post_added(sender, instance, **kwargs):
+#     #событие - добавление статьи
+#     if kwargs['action'] == 'post_add':
+#         categories = instance.category.all()
+#         #наполняем список подписчиков категорий добавленной статьи
+#         subscribers = []
+#         for category in categories:
+#             subscribers += category.subscribers.all()
+#
+#         subscribers_email_list = []
+#         for subscr in subscribers:
+#             subscribers_email_list += subscr.email
+#
+#         send_email_notif(instance.preview(), instance.pk, instance.title, subscribers_email_list)
