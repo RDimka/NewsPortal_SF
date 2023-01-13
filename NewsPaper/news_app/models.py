@@ -9,7 +9,11 @@ from django.urls import reverse
 
 class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
+    subscribers = models.ManyToManyField(User, through='SubscribersCategory', related_name='categories' )
 
+class SubscribersCategory(models.Model):
+    subscriber = models.ForeignKey(User, on_delete=models.CASCADE)
+    category = models.ForeignKey('Category', on_delete=models.CASCADE)
 
 class Post(models.Model):
     date_time_in = models.DateTimeField(auto_now_add=True)

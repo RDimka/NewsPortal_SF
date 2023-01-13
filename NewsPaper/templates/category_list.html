@@ -9,13 +9,16 @@ All news
 
 <!-- В контенте на странице мы выводим все товары -->
 {% block content %}
-   <h1>Все новости ({{ news_list | length }})</h1>
+<h1>Все новости ({{ category_post_list | length }})</h1>
     <h3>{% current_time '%d %b %Y' %}</h3>
+    {% if is_not_subscriber %}
+        <p><a href="{% url 'subscribe' category.id %}">Подписаться на категорию</a></p>
+    {% endif %}
     <div align="center"><a href="search">Поиск</a></div>
 
 
    <!-- Выводим новости, только если они есть с помощью тега if -->
-   {% if news_list %}
+   {% if category_post_list %}
        <table>
            <tr>
                <td>Заголовок</td>
@@ -28,7 +31,7 @@ All news
            т.е. новый HTML код, который указан в теле цикла.
            При этом сам цикл работает точно так же, как и в Python.
            news — переменная цикла, т.е. наш товар полученный из списка -->
-           {% for news in news_list %}
+           {% for news in category_post_list %}
            <tr>
                <!-- Не забываем, что переменные в шаблоне ничем не отличаются
                 от переменных в Python. Здесь также можно получать доступ к
@@ -37,7 +40,7 @@ All news
                <td><a href="{{ news.id }}">{{ news.title|censor }}</a></td>
                <td>{{ news.date_time_in | date:'d M Y' }}</td>
                <td>{{ news.text | truncatechars:20 }}</td>
-                <td>
+               <td>
                    {% for category in news.category.all %}
                     <a href="{% url 'category_list' category.id %}">{{ category.name }}</a>
                    {% endfor %}

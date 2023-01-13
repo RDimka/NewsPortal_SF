@@ -1,15 +1,19 @@
 from django.shortcuts import render
+
 # Импортируем класс, который говорит нам о том,
 # что в этом представлении мы будем выводить список объектов из БД
 from django.urls import reverse_lazy
 
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.shortcuts import get_object_or_404
 
 from .models import Post
+from .models import Category
 from .forms import PostForm
 from .filters import PostFilter
 
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 class PostList(ListView):
     # Указываем модель, объекты которой мы будем выводить
@@ -115,3 +119,36 @@ class PostDelete(DeleteView):
     model = Post
     template_name = 'news_delete.html'
     success_url = reverse_lazy('news_list')
+
+
+class CategoryList(ListView):
+    model = Post
+    template_name = 'category_list.html'
+    context_object_name = 'category_post_list'
+
+    def get_queryset(self):
+        #Получим одну категорию по pk из url
+        self.category = get_object_or_404(Category, id=self.kwargs['pk'])
+
+        #Список статей, принадлежащих данной категории
+        post_list_by_category = Post.objects.filter(category=self.category).order_by('-date_time_in')
+
+        return post_list_by_category
+
+    #проверяем подписан ли User на эту категорию
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        #Добавляем флаг если не пользователь
+        context['is_not_subscriber'] = self.request.user not in self.category.subscribers.all()
+        context['category'] = self.category
+        return context
+
+#только для зареганных пользователей
+@login_required
+def subscribe(request, pk):
+    user = request.user
+    category = Category.objects.get(id=pk)
+    category.subscribers.add(user)
+
+    message = "Вы подписались на рссылку новостей категории "
+    return render(request, 'subscribe.html', {'category': category, 'message': message})

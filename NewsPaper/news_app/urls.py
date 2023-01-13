@@ -1,6 +1,6 @@
 from django.urls import path
 # Импортируем созданное нами представление
-from .views import PostList, PostDetail, PostSearchList, PostCreate, PostUpdate, PostDelete
+from .views import PostList, PostDetail, PostSearchList, PostCreate, PostUpdate, PostDelete, CategoryList, subscribe
 
 
 urlpatterns = [
@@ -21,4 +21,7 @@ urlpatterns = [
    path('article/create/', PostCreate.as_view(), name='article_create'),
    path('article/<int:pk>/update', PostUpdate.as_view(), name='article_update'),
    path('article/<int:pk>/delete', PostDelete.as_view(), name='article_delete'),
+
+   path('categories/<int:pk>', CategoryList.as_view(), name='category_list'),
+   path('categories/<int:pk>/subscribe', subscribe, name='subscribe'),
 ]

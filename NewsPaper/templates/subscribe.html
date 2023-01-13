@@ -1,0 +1,12 @@
+<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
+{% extends 'flatpages/default.html' %}
+
+
+{% block title %}
+Subscribe
+{% endblock title %}
+
+<!-- В контенте на странице мы выводим саму статью, идентификатор которой был передан в url -->
+{% block content %}
+    <h1>{{ message }} {{category.name}}</h1>
+{% endblock content %}
