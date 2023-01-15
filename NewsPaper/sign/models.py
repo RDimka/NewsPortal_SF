@@ -6,6 +6,10 @@ from django.contrib.auth.models import Group
 from django.contrib.auth.models import User
 from django import forms
 
+from django.core.mail import send_mail
+
+from NewsPaper import settings
+
 
 class BaseRegisterForm(UserCreationForm):
     email = forms.EmailField(label = "Email")
@@ -27,4 +31,12 @@ class BasicSignupForm(SignupForm):
         user = super(BasicSignupForm, self).save(request)
         basic_group = Group.objects.get(name='common')
         basic_group.user_set.add(user)
+
+        send_mail(
+            'Вы зарегистрировались на новостном портале',
+            'Поздравляю, вы успешно прошли регистрацию на новостном портале',
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[user.email, ]
+        )
+
         return user
