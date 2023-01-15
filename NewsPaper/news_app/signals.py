@@ -3,15 +3,28 @@ from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
 from django.template.loader import render_to_string
 
+from NewsPaper import settings
 from news_app.models import PostCategory
 
 
 def send_email_notif(preview, pk, title, subscribers_email):
-    html_mail = render_to_string('post_add_email.html', {'text': preview, 'ahref': f'{settings.SITE_URL}/newspaper/{pk}',})
+    #берет за основу шаблон и создает текст письма
+    html_mail = render_to_string(
+        'post_add_email.html',
+        {
+            'text': preview,
+            'link': f'{settings.SITE_URL}/newspaper/{pk}',
+        }
+    )
 
-    message = EmailMultiAlternatives(subject=title, body='', from_email=settings.DEFAULT_FROM_EMAIL, to=subscribers_email )
+    message = EmailMultiAlternatives(
+        subject=title,
+        body='',
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=subscribers_email
+    )
 
-    message.attach_alternative(html_mail, 'text\html')
+    message.attach_alternative(html_mail, 'text/html')
     message.send()
 
 

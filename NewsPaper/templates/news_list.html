@@ -39,7 +39,7 @@ All news
                <td>{{ news.text | truncatechars:20 }}</td>
                 <td>
                    {% for category in news.category.all %}
-                    <a href="{% url 'category_list' category.id %}">{{ category.name }}</a>
+                    <a href="{% url 'category_list' category.id %}">{{ category }}</a>
                    {% endfor %}
                </td>
            </tr>
