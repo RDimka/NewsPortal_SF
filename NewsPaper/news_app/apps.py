@@ -7,4 +7,4 @@ class NewsAppConfig(AppConfig):
     name = 'news_app'
 
     def ready(self):
-        import NewsPaper.news_app.signals
+        import news_app.signals
