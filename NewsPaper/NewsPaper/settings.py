@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     # ... include the providers you want to enable:
     'allauth.socialaccount.providers.google',
+    'django_apscheduler',
 ]
 
 #DEFAULT_FROM_EMAIL = EMAIL_HOST_USER  # здесь указываем уже свою ПОЛНУЮ почту, с которой будут отправляться письма
@@ -177,3 +178,7 @@ EMAIL_HOST_USER = 'rdimir'#os.getenv('EMAIL_HOST_USER')  # ваше имя по�
 EMAIL_HOST_PASSWORD = 'blgijrnfgdurwzde'#os.getenv('EMAIL_HOST_PASSWORD')  # пароль от почты
 EMAIL_USE_SSL = True  # Яндекс использует ssl, подробнее о том, что это, почитайте в дополнительных источниках, но включать его здесь обязательно
 DEFAULT_FROM_EMAIL = 'rdimir@yandex.ru'#os.getenv('DEFAULT_FROM_EMAIL')
+
+APSCHEDULER_DATETIME_FORMAT = 'N j, Y, f:s a'
+
+APSCHEDULER_RUN_NOW_TIMEOUT = 25
