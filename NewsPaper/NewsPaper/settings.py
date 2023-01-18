@@ -182,3 +182,9 @@ DEFAULT_FROM_EMAIL = 'rdimir@yandex.ru'#os.getenv('DEFAULT_FROM_EMAIL')
 APSCHEDULER_DATETIME_FORMAT = 'N j, Y, f:s a'
 
 APSCHEDULER_RUN_NOW_TIMEOUT = 25
+
+CELERY_BROKER_URL = 'redis://default:pj87gCT5O8igSviv4An41fgYxp1Sgv82@redis-15717.c274.us-east-1-3.ec2.cloud.redislabs.com:15717'
+CELERY_RESULT_BACKEND = 'redis://default:pj87gCT5O8igSviv4An41fgYxp1Sgv82@redis-15717.c274.us-east-1-3.ec2.cloud.redislabs.com:15717'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
