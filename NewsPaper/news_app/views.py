@@ -21,7 +21,7 @@ from .filters import PostFilter
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.contrib.auth.decorators import login_required
 
-
+from .tasks import hello, printer, notify_at_new_post_added
 
 
 class PostList(ListView):
@@ -47,6 +47,7 @@ class PostList(ListView):
         # чтобы потом добавить в контекст и использовать в шаблоне.
         self.filterset = PostFilter(self.request.GET, queryset)
         # Возвращаем из функции отфильтрованный список товаров
+
         return self.filterset.qs
 
     def get_context_data(self, **kwargs):
@@ -111,15 +112,15 @@ class PostCreate(PermissionRequiredMixin, CreateView):
         post = form.save(commit=False)
         path = self.request.META['PATH_INFO']
 
-        #send_mail(
-        #         subject='Тест отправки писем',
-        #         message="Ушло письмо?",
-        #         from_email='rdimir@yandex.ru',
-        #         recipient_list=['rdimka@mail.ru', ]
-        #     )
-
         if path == '/newspaper/article/create/':  #если статья - ставим False. По умолчанию - новость - True
             post.is_news = False
+
+        #сохраняем, чтобы получить id статьи
+        post = form.save()
+
+        # запускаем задачу на оповещение подписчиков о создании статьи
+        notify_at_new_post_added.delay(post.pk)
+
         return super().form_valid(form)
 class PostUpdate(PermissionRequiredMixin, UpdateView):
 

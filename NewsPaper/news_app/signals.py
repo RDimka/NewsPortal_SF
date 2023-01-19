@@ -28,18 +28,18 @@ def send_email_notif(preview, pk, title, subscribers_email):
     message.send()
 
 
-@receiver(m2m_changed, sender=PostCategory)
-def new_post_added(sender, instance, **kwargs):
-    #событие - добавление статьи
-    if kwargs['action'] == 'post_add':
-        categories = instance.category.all()
-        #наполняем список подписчиков категорий добавленной статьи
-        subscribers = []
-        for category in categories:
-            subscribers += category.subscribers.all()
-
-        subscribers_email_list = []
-        for subscr in subscribers:
-            subscribers_email_list.append(subscr.email)
-
-        send_email_notif(instance.preview(), instance.pk, instance.title, subscribers_email_list)
+# @receiver(m2m_changed, sender=PostCategory)
+# def new_post_added(sender, instance, **kwargs):
+#     #событие - добавление статьи
+#     if kwargs['action'] == 'post_add':
+#         categories = instance.category.all()
+#         #наполняем список подписчиков категорий добавленной статьи
+#         subscribers = []
+#         for category in categories:
+#             subscribers += category.subscribers.all()
+#
+#         subscribers_email_list = []
+#         for subscr in subscribers:
+#             subscribers_email_list.append(subscr.email)
+#
+#         send_email_notif(instance.preview(), instance.pk, instance.title, subscribers_email_list)
