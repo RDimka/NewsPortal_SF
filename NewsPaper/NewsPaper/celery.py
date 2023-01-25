@@ -12,7 +12,7 @@ app.autodiscover_tasks()
 app.conf.beat_schedule = {
     'spam_weekly': {
         'task': 'news_app.tasks.weekly_spam',
-        'schedule': (hour=1, minute=0, day_of_week='monday'), #crontab(minute='*/1'),
+        'schedule': crontab(hour=1, minute=0, day_of_week='monday'), #crontab(minute='*/1'),
     },
 }
 
