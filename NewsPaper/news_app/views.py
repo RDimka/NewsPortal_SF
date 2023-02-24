@@ -23,6 +23,8 @@ from django.contrib.auth.decorators import login_required
 
 from .tasks import hello, printer, notify_at_new_post_added
 
+from django.core.cache import cache
+
 
 class PostList(ListView):
     # Указываем модель, объекты которой мы будем выводить
